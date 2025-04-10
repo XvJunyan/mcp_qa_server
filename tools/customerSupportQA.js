@@ -1,5 +1,9 @@
+// 引入问答数据库，确保导入正确
 const { qaDatabase } = require('../data/qa-database');
 const { matchQuestion } = require('../utils/matcher');
+
+// 调试输出，帮助诊断问题
+console.error(`[CustomerSupportQA] 加载数据库项: ${qaDatabase ? qaDatabase.length : 'undefined'}`);
 
 // 定义客服问答工具
 const customerSupportQATool = {
@@ -29,6 +33,21 @@ const customerSupportQATool = {
       handler: async ({ question, language = 'zh' }) => {
         if (!question) {
           throw new Error('问题不能为空');
+        }
+
+        // 确保qaDatabase存在
+        if (!qaDatabase || !Array.isArray(qaDatabase)) {
+          console.error('[CustomerSupportQA] qaDatabase未定义或不是数组');
+          const defaultResponse = language === 'zh' 
+            ? '抱歉，问答数据库未正确加载，无法回答您的问题。'
+            : '申し訳ありませんが、Q&Aデータベースが正しく読み込まれず、質問に回答できません。';
+          
+          return {
+            question,
+            answer: defaultResponse,
+            confidence: 0,
+            id: null
+          };
         }
 
         const { match, score } = matchQuestion(question, language, qaDatabase);
@@ -74,6 +93,12 @@ const customerSupportQATool = {
         }
       },
       handler: async ({ language = 'zh' }) => {
+        // 确保qaDatabase存在
+        if (!qaDatabase || !Array.isArray(qaDatabase)) {
+          console.error('[CustomerSupportQA] listFAQs: qaDatabase未定义或不是数组');
+          return [];
+        }
+
         return qaDatabase.map(qa => {
           return {
             id: qa.id,
@@ -107,6 +132,12 @@ const customerSupportQATool = {
       handler: async ({ query, language = 'zh' }) => {
         if (!query) {
           throw new Error('搜索关键词不能为空');
+        }
+
+        // 确保qaDatabase存在
+        if (!qaDatabase || !Array.isArray(qaDatabase)) {
+          console.error('[CustomerSupportQA] searchFAQs: qaDatabase未定义或不是数组');
+          return [];
         }
 
         const results = qaDatabase.filter(qa => {

@@ -3,6 +3,12 @@ function matchQuestion(question, language, qaItems) {
     let bestMatch = null;
     let highestScore = 0;
   
+    // 检查qaItems是否为undefined或null
+    if (!qaItems || !Array.isArray(qaItems)) {
+      console.error("[Matcher] qaItems未定义或不是数组");
+      return { match: null, score: 0 };
+    }
+  
     // 将问题转换为小写并分词
     const questionLower = question.toLowerCase();
     const questionWords = questionLower.split(/\s+|，|。|！|？|、|,|\.|!|\?/);
