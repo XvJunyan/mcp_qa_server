@@ -1,0 +1,18 @@
+{
+  "name": "mcp_qa_server",
+  "version": "1.0.0",
+  "description": "Customer Support Q&A MCP Server",
+  "main": "server.js",
+  "bin": {
+    "mcp-qa-server": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "mkdir -p dist && cp -r server.js data tools utils dist/ && cp package.json dist/"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.9.0",
+    "@chatmcp/sdk": "^1.0.0",
+    "zod": "^3.22.4"
+  }
+}
