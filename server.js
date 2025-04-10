@@ -73,65 +73,65 @@ server.tool(
 );
 
 // 添加列出FAQ工具 - 使用Zod验证器
-server.tool(
-  "listFAQs",
-  {
-    language: z.string().default('zh').describe("语言选择 (zh 或 ja)")
-  },
-  async (request) => {
-    try {
-      const { language = 'zh' } = request;
+// server.tool(
+//   "listFAQs",
+//   {
+//     language: z.string().default('zh').describe("语言选择 (zh 或 ja)")
+//   },
+//   async (request) => {
+//     try {
+//       const { language = 'zh' } = request;
       
-      // 调用原有的处理函数
-      const result = await customerSupportQATool.functions[1].handler({ language });
+//       // 调用原有的处理函数
+//       const result = await customerSupportQATool.functions[1].handler({ language });
       
-      return {
-        content: [
-          { type: "text", text: JSON.stringify(result, null, 2) }
-        ]
-      };
-    } catch (error) {
-      console.error(`[Customer Support QA MCP] 列出FAQ时出错: ${error.message}`);
-      return {
-        content: [
-          { type: "text", text: `列出FAQ时出错: ${error.message}` }
-        ],
-        isError: true
-      };
-    }
-  }
-);
+//       return {
+//         content: [
+//           { type: "text", text: JSON.stringify(result, null, 2) }
+//         ]
+//       };
+//     } catch (error) {
+//       console.error(`[Customer Support QA MCP] 列出FAQ时出错: ${error.message}`);
+//       return {
+//         content: [
+//           { type: "text", text: `列出FAQ时出错: ${error.message}` }
+//         ],
+//         isError: true
+//       };
+//     }
+//   }
+// );
 
 // 添加搜索FAQ工具 - 使用Zod验证器
-server.tool(
-  "searchFAQs",
-  {
-    query: z.string().describe("搜索关键词"),
-    language: z.string().default('zh').describe("搜索语言 (zh 或 ja)")
-  },
-  async (request) => {
-    try {
-      const { query, language = 'zh' } = request;
+// server.tool(
+//   "searchFAQs",
+//   {
+//     query: z.string().describe("搜索关键词"),
+//     language: z.string().default('zh').describe("搜索语言 (zh 或 ja)")
+//   },
+//   async (request) => {
+//     try {
+//       const { query, language = 'zh' } = request;
       
-      // 调用原有的处理函数
-      const result = await customerSupportQATool.functions[2].handler({ query, language });
+//       // 调用原有的处理函数
+//       const result = await customerSupportQATool.functions[2].handler({ query, language });
       
-      return {
-        content: [
-          { type: "text", text: JSON.stringify(result, null, 2) }
-        ]
-      };
-    } catch (error) {
-      console.error(`[Customer Support QA MCP] 搜索FAQ时出错: ${error.message}`);
-      return {
-        content: [
-          { type: "text", text: `搜索FAQ时出错: ${error.message}` }
-        ],
-        isError: true
-      };
-    }
-  }
-);
+//       return {
+//         content: [
+//           { type: "text", text: JSON.stringify(result, null, 2) }
+//         ]
+//       };
+//     } catch (error) {
+//       console.error(`[Customer Support QA MCP] 搜索FAQ时出错: ${error.message}`);
+//       return {
+//         content: [
+//           { type: "text", text: `搜索FAQ时出错: ${error.message}` }
+//         ],
+//         isError: true
+//       };
+//     }
+//   }
+// );
 
 // 启动服务器
 async function runServer() {
