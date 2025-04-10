@@ -6,6 +6,7 @@ const { RestServerTransport } = require("@chatmcp/sdk/server/rest.js");
 const { getParamValue, getAuthValue } = require("@chatmcp/sdk/utils/index.js");
 const fs = require('fs');
 const path = require('path');
+const { z } = require('zod');
 const { customerSupportQATool } = require('./tools/customerSupportQA');
 
 // 从参数或环境变量获取配置
@@ -33,10 +34,13 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
-// 添加回答问题工具
+// 添加回答问题工具 - 使用Zod验证器
 server.tool(
   "answerQuestion",
-  customerSupportQATool.functions[0].parameters,
+  {
+    question: z.string().describe("用户的问题"),
+    language: z.string().default('zh').describe("回答的语言 (zh 或 ja)")
+  },
   async (request) => {
     try {
       const { question, language = 'zh' } = request;
@@ -68,10 +72,12 @@ server.tool(
   }
 );
 
-// 添加列出FAQ工具
+// 添加列出FAQ工具 - 使用Zod验证器
 server.tool(
   "listFAQs",
-  customerSupportQATool.functions[1].parameters,
+  {
+    language: z.string().default('zh').describe("语言选择 (zh 或 ja)")
+  },
   async (request) => {
     try {
       const { language = 'zh' } = request;
@@ -96,10 +102,13 @@ server.tool(
   }
 );
 
-// 添加搜索FAQ工具
+// 添加搜索FAQ工具 - 使用Zod验证器
 server.tool(
   "searchFAQs",
-  customerSupportQATool.functions[2].parameters,
+  {
+    query: z.string().describe("搜索关键词"),
+    language: z.string().default('zh').describe("搜索语言 (zh 或 ja)")
+  },
   async (request) => {
     try {
       const { query, language = 'zh' } = request;
